@@ -1,1 +1,137 @@
-<p> hi! </p>
+<body id="page-top">
+    <div id="wrapper">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div class="container-fluid" style="padding-top: 25px;">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-dark mb-4">ClassicChat Messages</h3>
+                        </div>
+                        <div class="col-xl-2 text-right"><a [routerLink]="['']"><span class="text-right">Account Profile</span></a></div>
+                        <div class="col-xl-1"><a [routerLink]="['']"><span>Logout</span></a></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-4" style="min-width: 390px;">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <div class="row">
+                                        <div class="col-xl-10">
+                                            <h6 class="text-primary d-flex font-weight-bold m-0" style="padding-top: 5px;">Chats</h6>
+                                        </div>
+                                        <div class="col"><img src="assets/img/writing.png" style="width: 25px;"></div>
+                                    </div>
+                                </div>
+                                <div class="card-body scroll"  style="padding-top: 0px;padding-bottom: 0px;">
+                                  <div *ngFor="let item of createRange(15);">
+                                    <div style="margin-bottom: 0px;padding-top: 0px;padding-bottom: 0px;height: 80px;">
+                                        <div class="row" style="margin-right: -20px;margin-left: -20px;height: 80px;" [ngClass]="{'selected-group': selectedChat === 'chat_' + item}" (click)="selectedChat = 'chat_' + item">
+                                            <div class="col-lg-3"><img class="rounded-circle" src="assets/img/avatar5.jpeg" style="margin-top: 15px;width: 50px;height: 50px;"></div>
+                                            <div class="col" style="padding-right: 0px;padding-left: 0px;">
+                                                <h3 class="small font-weight-bold" style="font-size: 20px;margin-top: 10px;margin-bottom:0px;" [ngClass]="{'selected-group-color': selectedChat === 'chat_' + item}" (click)="selectedChat = 'chat_' + item">Siddhi Kapur</h3>
+                                                <div class="row">
+                                                    <div class="col-lg-8" style="height: 24px;margin-top: 1px;"><span [ngClass]="{'selected-group-color-2': selectedChat === 'chat_' + item}" (click)="selectedChat = 'chat_' + item">Hello what's up ..&nbsp;</span></div>
+                                                    <div class="col"><span [ngClass]="{'selected-group-color-2': selectedChat === 'chat_' + item}" (click)="selectedChat = 'chat_' + item">6:45pm</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="margin-top: 0px;margin-bottom: 0px;">
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8" style="min-width: 790px;">
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow mb-3">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 font-weight-bold">Chat Group Name</p>
+                                        </div>
+                                        <div class="card-body">
+
+                                        	<div class="scroll-messages">
+                                            <div class="row" style="margin-bottom: 20px;">
+                                                <div class="col">
+                                                    <div class="row" style="color: rgba(133,135,150,0);">
+                                                        <div class="col-xl-2"><img class="rounded-circle" src="assets/img/avatar4.jpeg" style="width: 45px;"></div>
+                                                        <div class="col text-left text-dark d-flex flex-grow-1 justify-content-center align-items-center align-content-center align-self-center flex-nowrap justify-content-xl-start align-items-xl-center"
+                                                            style="background-color: rgba(237,237,237,0);color: rgba(90,92,105,0);padding-left: 0px;padding-right: 0px;"><span class="border rounded" style="color: ##000000;background-color: #eeeeee;padding: 10px;">hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;</span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-5"></div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 20px;">
+                                                <div class="col-xl-5"></div>
+                                                <div class="col">
+                                                    <div class="row" style="color: rgba(133,135,150,0);">
+                                                        <div class="col text-left text-dark d-flex flex-grow-1 justify-content-center align-items-center align-content-center align-self-center flex-nowrap justify-content-xl-start align-items-xl-center" style="background-color: rgba(237,237,237,0);color: rgba(90,92,105,0);padding-left: 0px;padding-right: 0px;"><span class="border rounded" style="color: #f8f9fc;background-color: #4e73df;padding: 10px;">hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;</span></div>
+                                                        <div
+                                                            class="col-xl-2"><img class="rounded-circle" src="assets/img/avatar4.jpeg" style="width: 45px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-bottom: 20px;">
+                                            <div class="col">
+                                                <div class="row" style="color: rgba(133,135,150,0);">
+                                                    <div class="col-xl-2"><img class="rounded-circle" src="assets/img/avatar4.jpeg" style="width: 45px;"></div>
+                                                    <div class="col text-left text-dark d-flex flex-grow-1 justify-content-center align-items-center align-content-center align-self-center flex-nowrap justify-content-xl-start align-items-xl-center"
+                                                        style="background-color: rgba(237,237,237,0);color: rgba(90,92,105,0);padding-left: 0px;padding-right: 0px;"><span class="border rounded" style="color: ##000000;background-color: #eeeeee;padding: 10px;">hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-5"></div>
+                                        </div>
+                                        <div class="row" style="margin-bottom: 20px;">
+                                            <div class="col-xl-5"></div>
+                                            <div class="col">
+                                                <div class="row" style="color: rgba(133,135,150,0);">
+                                                    <div class="col text-left text-dark d-flex flex-grow-1 justify-content-center align-items-center align-content-center align-self-center flex-nowrap justify-content-xl-start align-items-xl-center" style="background-color: rgba(237,237,237,0);color: rgba(90,92,105,0);padding-left: 0px;padding-right: 0px;"><span class="border rounded" style="color: #f8f9fc;background-color: #4e73df;padding: 10px;">hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;</span></div>
+                                                    <div
+                                                        class="col-xl-2"><img class="rounded-circle" src="assets/img/avatar4.jpeg" style="width: 45px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 20px;">
+                                        <div class="col">
+                                            <div class="row" style="color: rgba(133,135,150,0);">
+                                                <div class="col-xl-2"><img class="rounded-circle" src="assets/img/avatar4.jpeg" style="width: 45px;"></div>
+                                                <div class="col text-left text-dark d-flex flex-grow-1 justify-content-center align-items-center align-content-center align-self-center flex-nowrap justify-content-xl-start align-items-xl-center"
+                                                    style="background-color: rgba(237,237,237,0);color: rgba(90,92,105,0);padding-left: 0px;padding-right: 0px;"><span class="border rounded" style="color: ##000000;background-color: #eeeeee;padding: 10px;">ing? are tyou doing goo? just want to check up on you ya know :)&nbsp;</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-5"></div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 20px;">
+                                        <div class="col-xl-5"></div>
+                                        <div class="col">
+                                            <div class="row" style="color: rgba(133,135,150,0);">
+                                                <div class="col text-left text-dark d-flex flex-grow-1 justify-content-center align-items-center align-content-center align-self-center flex-nowrap justify-content-xl-start align-items-xl-center" style="background-color: rgba(237,237,237,0);color: rgba(90,92,105,0);padding-left: 0px;padding-right: 0px;"><span class="border rounded" style="color: #f8f9fc;background-color: #4e73df;padding: 10px;">hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;hi what's up, how's it gooing? are tyou doing goo? just want to check up on you ya know :)&nbsp;</span></div>
+                                                <div
+                                                    class="col-xl-2"><img class="rounded-circle" src="assets/img/avatar4.jpeg" style="width: 45px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                            </div>
+                                            <div>
+                                            <form>
+                                                <hr>
+                                                <div class="form-group" style="margin-bottom: -5px;">
+                                                    <div class="form-row">
+                                                        <div class="col-xl-11"><input class="form-control" type="text" placeholder="Write Message..." name="first_name"></div>
+                                                        <div class="col"><button class="btn btn-primary" type="submit">Send</button></div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

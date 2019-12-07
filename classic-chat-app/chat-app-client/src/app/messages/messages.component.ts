@@ -7,9 +7,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagesComponent implements OnInit {
 
-  constructor() { }
+  selectedChat:string;
+
+  constructor() {
+    this.selectedChat = 'chat_1';
+  }
 
   ngOnInit() {
   }
+
+  createRange(number){
+    var items: number[] = [];
+    for(var i = 1; i <= number; i++){
+       items.push(i);
+    }
+    return items;
+}
 
 }
