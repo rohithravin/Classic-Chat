@@ -12,11 +12,20 @@ app.use(function (req, res, next) {
 });
 
 app.post('/verifyLoginCredentials', function(request, response){
-  var house = JSON.parse(request.body['login_credentials']);
-  console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , house)
+  var login_info = JSON.parse(request.body['login_credentials']);
+  console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , request.body['login_credentials'])
 
   console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
   return response.json({success:1});
+
+})
+
+app.post('/createAccount', function(request, response){
+  var account_info = JSON.parse(request.body['account_information']);
+  console.log('(INFO) POST /createAccount REQUEST: ' , request.body['account_information'])
+
+  console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
+  return response.json({success:-1, message:'Success!'});
 
 })
 

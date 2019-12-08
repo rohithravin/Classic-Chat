@@ -1,3 +1,4 @@
+<div class="alert alert-danger" role="alert" *ngIf=errErrorMessage style="margin-bottom:0px;"><span><strong>{{errMessage}}</strong></span></div>
 <body class="bg-gradient-primary" style="height:100vh;">
       <div class="container">
           <div class="row justify-content-center">
@@ -15,17 +16,26 @@
                           </div>
                           <form class="user">
                               <div class="form-group row">
-                                  <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="First Name" name="first_name"></div>
-                                  <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Last Name" name="last_name"></div>
+                                  <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="First Name" name="first_name" required [(ngModel)]="account_model.first_name" #opCarrier="ngModel">
+                                    <small class="text-danger" *ngIf="account_model.first_name == ''  && errFirstName" style='margin-left:20px;'>First Name is required</small>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <input class="form-control form-control-user" type="text"  placeholder="Last Name" name="last_name" required [(ngModel)]="account_model.last_name" #opCarrier="ngModel">
+                                    <small class="text-danger" *ngIf="account_model.last_name == ''  && errLastName" style='margin-left:20px;'>Last Name is required</small>
+                                  </div>
                               </div>
-                              <div class="form-group"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email"></div>
+                              <div class="form-group">
+                                <input class="form-control form-control-user" type="email"  aria-describedby="emailHelp" placeholder="Email Address" name="email"  required [(ngModel)]="account_model.email" #opCarrier="ngModel">
+                                <small class="text-danger" *ngIf="account_model.email == ''  && errEmail" style='margin-left:20px;'>Email Address is required</small>
+                              </div>
 
-                              <div class="form-group"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email"></div>
-                              <div class="form-group row">
-                                  <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password"></div>
-                                  <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
+
+                              <div class="form-group ">
+                                  <input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password" required [(ngModel)]="account_model.password" #opCarrier="ngModel">
+                                  <small class="text-danger" *ngIf="account_model.password == ''  && errPassword" style='margin-left:20px;'>Password is required</small>
                               </div>
-                              <button class="btn btn-primary btn-block text-white btn-user" type="submit" [routerLink]="['/signin']" >Register Account</button>
+                              <button class="btn btn-primary btn-block text-white btn-user" type="submit" (click)=CreateAccount() >Register Account</button>
                               <hr>
                           </form>
                           <div class="text-center"><a class="small" [routerLink]="['/signin']">Already have an account? Login!</a></div>

@@ -14,10 +14,14 @@ export class HttpService {
      })
    };
 
-   verifyLoginCredentials(login_info) {
+  verifyLoginCredentials(login_info) {
     const payload  = JSON.stringify(login_info);
     return this.http.post('http://localhost:8888/verifyLoginCredentials', { login_credentials: payload }, this.httpOptions);
   }
 
+  createAccount(account_info) {
+    const payload  = JSON.stringify(account_info);
+    return this.http.post('http://localhost:8888/createAccount', { account_information: payload }, this.httpOptions);
+  }
 
 }
