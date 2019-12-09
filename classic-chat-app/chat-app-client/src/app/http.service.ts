@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators'
+import { throwError } from 'rxjs';
 
 @Injectable()
 
@@ -20,8 +22,15 @@ export class HttpService {
   }
 
   createAccount(account_info) {
-    const payload  = JSON.stringify(account_info);
-    return this.http.post('http://localhost:8888/createAccount', { account_information: payload }, this.httpOptions);
+      const payload  = JSON.stringify(account_info);
+      return this.http.post('http://localhost:8888/createAccount', { account_information: payload }, this.httpOptions).pipe( catchError(this.handleError));
   }
+
+  handleError(error: HttpErrorResponse){
+    var temp = ['SERVE ERROR: Server not responding. Try again later.'];
+    console.log(temp[0]);
+    return temp;
+  }
+
 
 }

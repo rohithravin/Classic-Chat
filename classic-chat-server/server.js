@@ -16,7 +16,7 @@ app.post('/verifyLoginCredentials', function(request, response){
   console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , request.body['login_credentials'])
 
   console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
-  return response.json({success:1});
+  return response.json({success:-1});
 
 })
 
@@ -25,7 +25,7 @@ app.post('/createAccount', function(request, response){
   console.log('(INFO) POST /createAccount REQUEST: ' , request.body['account_information'])
 
   console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
-  return response.json({success:-1, message:'Success!'});
+  return response.json({success:1, message:'Success!'});
 
 })
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../models/login-model';
 import {Router} from '@angular/router';
 import { HttpService }  from '../http.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,21 +15,26 @@ export class SignInComponent implements OnInit {
   remember_check_box:boolean;
   errEmail:boolean;
   errPassword:boolean;
-  errErrorMessage:boolean;
-  errMessage:string;
 
-  constructor(private _router:Router, private _httpService:HttpService) {
+  constructor(private _router:Router, private _httpService:HttpService,private _snackBar: MatSnackBar) {
+
+    if (localStorage.getItem('ClassicChat_account_created') == 'true'){
+      this._snackBar.open('Account Created! Log in with new credentials.', 'Close', {
+        verticalPosition: 'top'
+      });
+      localStorage.setItem('ClassicChat_account_created', 'false');
+    }
+
     this.login_model = new LoginModel('','');
     this.remember_check_box = false;
     this.errEmail = false;
     this.errPassword = false;
     if(localStorage.getItem('ClassicChat_login_error')=='True'){
-      this.errErrorMessage = true;
+      localStorage.setItem('ClassicChat_login_error','False')
+      this._snackBar.open('Incorrect Login Credentials. Try Again.', 'Close', {
+        verticalPosition: 'top'
+      });
     }
-    else{
-      this.errErrorMessage = false;
-    }
-    this.errMessage = 'Invalid username or password.'
 
   }
 
@@ -53,16 +59,23 @@ export class SignInComponent implements OnInit {
         err.subscribe(data=>{
           console.log("response:", data);
           if (data['success'] == 1){
-              this.errErrorMessage = false;
+            this._snackBar.dismiss();
               if (this.remember_check_box == true)
                 localStorage.setItem('ClassicChat_login_model', JSON.stringify(this.login_model));
               else
                 localStorage.setItem('ClassicChat_login_model', '');
           }
           else{
-            this.errErrorMessage = true
+            this._snackBar.open('Incorrect Login Credentials. Try Again.', 'Close', {
+              verticalPosition: 'top'
+            });
           }
         })
+    }
+    else{
+      this._snackBar.open('Enter Required Fields.', 'Close', {
+        verticalPosition: 'top'
+      });
     }
 
   }

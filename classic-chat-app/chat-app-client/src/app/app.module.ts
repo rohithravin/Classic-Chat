@@ -7,8 +7,10 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { MessagesComponent } from './messages/messages.component';
-import { HttpClientModule, HttpClient } from '@angular/common/http'
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { HttpService } from './http.service';
+import {BrowserAnimationsModule} from  '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { HttpService } from './http.service';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule
   ],
   providers: [HttpService],
   bootstrap: [AppComponent]

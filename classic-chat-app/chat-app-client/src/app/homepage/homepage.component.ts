@@ -30,7 +30,6 @@ export class HomepageComponent implements OnInit {
       this.login_model = JSON.parse(temp_login_model);
       var err=this._httpService.verifyLoginCredentials(this.login_model);
       err.subscribe(data=>{
-        console.log("response:", data);
         if (data['success'] == 1){
           console.log('WOHOOO');
         }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { AccountModel } from '../models/account-model';
 import {Router} from '@angular/router';
 import { HttpService }  from '../http.service';
@@ -16,42 +17,43 @@ export class SignUpComponent implements OnInit {
   errPassword:boolean;
   errFirstName:boolean;
   errLastName:boolean;
-  errErrorMessage:boolean;
-  errMessage:string;
 
-
-  constructor(private _router:Router, private _httpService:HttpService) {
+  constructor(private _router:Router, private _httpService:HttpService, private _snackBar: MatSnackBar) {
     this.account_model  = new AccountModel('','','','');
     this.errEmail = false;
     this.errPassword = false;
     this.errFirstName = false;
     this.errLastName = false;
-    this.errErrorMessage = false;
-    this.errMessage = 'Server error. Please try again later';
 
   }
 
   ngOnInit() {
-    
+
   }
 
 
 
   CreateAccount(){
-    console.log(this.account_model);
     if(this.Validate()){
-      var err=this._httpService.createAccount(this.account_model);
-      err.subscribe(data=>{
-        console.log("response:", data);
-        if (data['success'] == 1){
-            this.errErrorMessage = false;
-            this._router.navigate(['/signin']);
-        }
-        else{
-          this.errMessage = data['message'];
-          this.errErrorMessage = true;
-        }
-      })
+        var err=this._httpService.createAccount(this.account_model);
+        err.subscribe(data=>{
+          if (typeof data === "string"){
+            this._snackBar.open(data, 'Close', {
+              verticalPosition: 'top'
+            });
+          }
+          else{
+            if (data['success'] == 1){
+                localStorage.setItem('ClassicChat_account_created', 'true');
+                this._router.navigate(['/signin']);
+            }
+            else{
+              this._snackBar.open('SERVER ERROR MESSAGE: ' + data['message'], 'Close', {
+                verticalPosition: 'top'
+              });
+            }
+          }
+        })
     }
   }
 
@@ -72,9 +74,15 @@ export class SignUpComponent implements OnInit {
       this.errLastName = true;
     else
       this.errLastName = false;
-    if (this.errLastName && this.errFirstName && this.errEmail && this.errPassword)
+    if (this.errLastName || this.errFirstName || this.errEmail || this.errPassword){
+      this._snackBar.open('USER ERROR: Enter required fields.', 'Close', {
+        verticalPosition: 'top'
+      });
       return false;
-    else
+    }
+    else{
+      this._snackBar.dismiss();
       return true;
+    }
   }
 }
