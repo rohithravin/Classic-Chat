@@ -28,10 +28,82 @@ app.post('/createAccount', function(request, response){
   var account_info = JSON.parse(request.body['account_information']);
   console.log('(INFO) POST /createAccount REQUEST: ' , request.body['account_information'])
 
-  console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
-  return response.json({success:1, message:'Success!'});
+  var body2 = {
+   "parameters": {
+           "email": email
+       },
+       "sync": true
+ }
+  options = {
+     url: restURL + '/v1/services/finduser/0.1',
+     method: 'POST',
+     headers: {
+         'content-type': 'application/json',
+         'authorization': REST_SERVICE_API_TOKEN
+     },
+     body: JSON.stringify(body2),
+     rejectUnhauthorized : false,
+     strictSSL: false
+ }
+ request(options, function(err, res, body) {
+    if (error) return response.json({success:-3, message:'Server Error.'});
+     if (res.statusCode == 200) {
+         let json = JSON.parse(body);
+         if (json.rowCount == 0){
+
+           var body = {
+             "parameters": {
+                     "firstname": firstname,
+                     "lastname": lastname,
+                     "email": email,
+                     "password": password
+                 },
+                 "sync": true
+           }
+           options = {
+               url: restURL + '/v1/services/adduser/0.1',
+               method: 'POST',
+               headers: {
+                   'content-type': 'application/json',
+                   'authorization': REST_SERVICE_API_TOKEN
+               },
+               body: JSON.stringify(body),
+               rejectUnhauthorized : false,
+               strictSSL: false
+           }
+           request(options, function(err, res, body) {
+                if (error) {
+                  console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -6');
+                  return response.json({success:-6, message:'Server Error.'});
+                }
+               if (res.statusCode == 200) {
+                   let json = JSON.parse(body);
+                   console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
+                   return response.json({success:1, message:'Account Created!'});
+               }
+               else{
+                 console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -1');
+                 return response.json({success:-1, message:'Error In Adding User to Database.'});
+               }
+           })
+         }
+         else{
+           console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -2');
+           return response.json({success:-2, message:'Email Address Is Already Used.'});
+         }
+
+     }
+     else{
+       console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -4');
+       return response.json({success:-4, message:json});
+     }
+
+     console.log(body)
+ })
 
 })
+
+
 
 function getRestServiceToken() {
   var body = {
@@ -68,6 +140,7 @@ function getRestServiceToken() {
 }
 
 setInterval(getRestServiceToken, 30000);
+
 app.listen(8888, function(){
     console.log("Server is listening on port 8888");
 })

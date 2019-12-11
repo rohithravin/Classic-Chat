@@ -14,7 +14,7 @@ const databasePassword = "password"
 //Token used to authenticate REST calls
 var REST_SERVICE_API_TOKEN = ""
 
-const body = {
+var body = {
   "dbParms": {
       "dbHost": hostName,
       "dbName": databaseName,
@@ -27,8 +27,7 @@ const body = {
 }
 
 
-function intervalFunc() {
-  const options = {
+  var options = {
       url: restURL + '/v1/auth',
       method: 'POST',
       headers: {
@@ -44,12 +43,40 @@ function intervalFunc() {
            let json = JSON.parse(body);
            console.log('[POST] Aquired New Rest Service Token: ' + `${json.token}`)
            REST_SERVICE_API_TOKEN = json.token
+
+
+
+           var body2 = {
+            "parameters": {
+                    "email": "urcool@who.co"
+                },
+                "sync": true
+          }
+           options = {
+              url: restURL + '/v1/services/finduser/0.1',
+              method: 'POST',
+              headers: {
+                  'content-type': 'application/json',
+                  'authorization': REST_SERVICE_API_TOKEN
+              },
+              body: JSON.stringify(body2),
+              rejectUnhauthorized : false,
+              strictSSL: false
+          }
+          request(options, function(err, res, body) {
+              if (res.statusCode == 200) {
+                  let json = JSON.parse(body);
+                  console.log(json.rowCount)
+              }
+              console.log(body)
+          })
+
+
+
+
        }
        else{
           console.log('ERROR IN AQUIRING TOKEN. CHECK DATABASE CREDENTIALS.')
        }
 
   })
-}
-
-setInterval(intervalFunc, 1500);
