@@ -24,17 +24,18 @@ app.post('/verifyLoginCredentials', function(request, response){
 
 })
 
-app.post('/createAccount', function(request, response){
-  var account_info = JSON.parse(request.body['account_information']);
-  console.log('(INFO) POST /createAccount REQUEST: ' , request.body['account_information'])
+app.post('/createAccount', function(req, response){
+
+  var account_info = JSON.parse(req.body['account_information']);
+  console.log('(INFO) POST /createAccount REQUEST: ' , account_info.first_name)
   var body2 = {
    "parameters": {
-           "email": email
+           "email": account_info.email
        },
        "sync": true
  }
-  options = {
-     url: restURL + '/v1/services/finduser/0.1',
+  var options = {
+     url: process.env.REST_URL + '/v1/services/finduser/0.1',
      method: 'POST',
      headers: {
          'content-type': 'application/json',
@@ -45,7 +46,7 @@ app.post('/createAccount', function(request, response){
      strictSSL: false
  }
  request(options, function(err, res, body) {
-    if (error){
+    if (err){
       console.log('(INFO) POST /createAccount RESPONSE: -3');
       return response.json({success:-3, message:'Server Error.'});
     }
@@ -55,15 +56,15 @@ app.post('/createAccount', function(request, response){
 
            var body3 = {
              "parameters": {
-                     "firstname": firstname,
-                     "lastname": lastname,
-                     "email": email,
-                     "password": password
+                     "firstname": account_info.first_name,
+                     "lastname": account_info.last_name,
+                     "email": account_info.email,
+                     "password": account_info.password
                  },
                  "sync": true
            }
-           options = {
-               url: restURL + '/v1/services/adduser/0.1',
+           var options = {
+               url: process.env.REST_URL + '/v1/services/adduser/0.1',
                method: 'POST',
                headers: {
                    'content-type': 'application/json',
@@ -74,7 +75,7 @@ app.post('/createAccount', function(request, response){
                strictSSL: false
            }
            request(options, function(err, res, body) {
-                if (error) {
+                if (err) {
                   console.log('(INFO) POST /createAccount RESPONSE: -6');
                   return response.json({success:-6, message:'Server Error.'});
                 }
@@ -126,7 +127,8 @@ function getRestServiceToken() {
       strictSSL: false
   }
   request(options, function(err, res, body) {
-       if (res.statusCode == 200) {
+      if (err) console.log('[ERROR] /getRestServiceToken :'+ err)
+        if (res.statusCode == 200) {
            let json = JSON.parse(body);
            console.log('[POST] Aquired New Rest Service Token: ' + `${json.token}`)
            REST_SERVICE_API_TOKEN = json.token
@@ -137,7 +139,7 @@ function getRestServiceToken() {
   })
 }
 
-setInterval(getRestServiceToken, 30000);
+setInterval(getRestServiceToken, 100000);
 
 app.listen(8888, function(){
     console.log("Server is listening on port 8888");
