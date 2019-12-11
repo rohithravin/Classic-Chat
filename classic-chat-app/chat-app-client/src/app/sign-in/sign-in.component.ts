@@ -80,6 +80,11 @@ export class SignInComponent implements OnInit {
 
   }
 
+  SignUp(){
+    this._snackBar.dismiss();
+    this._router.navigate(['/signup']);
+  }
+
   RememberMe(){
     if (this.remember_check_box == false){
       this.remember_check_box = true;

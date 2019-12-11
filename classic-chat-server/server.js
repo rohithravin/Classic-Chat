@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
 });
 
 app.post('/verifyLoginCredentials', function(request, response){
-  var login_info = JSON.parse(request.body['login_credentials']['first_name']);
+  var login_info = JSON.parse(request.body['login_credentials']);
   console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , request.body['login_credentials'])
 
   console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
@@ -50,7 +50,7 @@ app.post('/createAccount', function(req, response){
       console.log('(INFO) POST /createAccount RESPONSE: -3');
       return response.json({success:-3, message:'Server Error.'});
     }
-     if (res.statusCode == 200) {
+     else if (res.statusCode == 200) {
          let json = JSON.parse(body);
          if (json.rowCount == 0){
 
@@ -79,7 +79,7 @@ app.post('/createAccount', function(req, response){
                   console.log('(INFO) POST /createAccount RESPONSE: -6');
                   return response.json({success:-6, message:'Server Error.'});
                 }
-               if (res.statusCode == 200) {
+               else if (res.statusCode == 200) {
                    let json = JSON.parse(body);
                    console.log('(INFO) POST /createAccount RESPONSE: 1');
                    return response.json({success:1, message:'Account Created!'});
@@ -128,7 +128,7 @@ function getRestServiceToken() {
   }
   request(options, function(err, res, body) {
       if (err) console.log('[ERROR] /getRestServiceToken :'+ err)
-        if (res.statusCode == 200) {
+        else if (res.statusCode == 200) {
            let json = JSON.parse(body);
            console.log('[POST] Aquired New Rest Service Token: ' + `${json.token}`)
            REST_SERVICE_API_TOKEN = json.token
@@ -139,7 +139,7 @@ function getRestServiceToken() {
   })
 }
 
-setInterval(getRestServiceToken, 100000);
+setInterval(getRestServiceToken, 10000);
 
 app.listen(8888, function(){
     console.log("Server is listening on port 8888");

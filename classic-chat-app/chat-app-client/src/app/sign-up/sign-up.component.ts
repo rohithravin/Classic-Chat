@@ -57,6 +57,11 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  SignIn(){
+    this._snackBar.dismiss();
+    this._router.navigate(['/signin']);
+  }
+
   Validate(){
     if (this.account_model.email == '')
       this.errEmail = true;
