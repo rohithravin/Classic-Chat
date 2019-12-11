@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
 });
 
 app.post('/verifyLoginCredentials', function(request, response){
-  var login_info = JSON.parse(request.body['login_credentials']);
+  var login_info = JSON.parse(request.body['login_credentials']['first_name']);
   console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , request.body['login_credentials'])
 
   console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
@@ -27,7 +27,6 @@ app.post('/verifyLoginCredentials', function(request, response){
 app.post('/createAccount', function(request, response){
   var account_info = JSON.parse(request.body['account_information']);
   console.log('(INFO) POST /createAccount REQUEST: ' , request.body['account_information'])
-
   var body2 = {
    "parameters": {
            "email": email
@@ -46,12 +45,15 @@ app.post('/createAccount', function(request, response){
      strictSSL: false
  }
  request(options, function(err, res, body) {
-    if (error) return response.json({success:-3, message:'Server Error.'});
+    if (error){
+      console.log('(INFO) POST /createAccount RESPONSE: -3');
+      return response.json({success:-3, message:'Server Error.'});
+    }
      if (res.statusCode == 200) {
          let json = JSON.parse(body);
          if (json.rowCount == 0){
 
-           var body = {
+           var body3 = {
              "parameters": {
                      "firstname": firstname,
                      "lastname": lastname,
@@ -67,40 +69,36 @@ app.post('/createAccount', function(request, response){
                    'content-type': 'application/json',
                    'authorization': REST_SERVICE_API_TOKEN
                },
-               body: JSON.stringify(body),
+               body: JSON.stringify(body3),
                rejectUnhauthorized : false,
                strictSSL: false
            }
            request(options, function(err, res, body) {
                 if (error) {
-                  console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -6');
+                  console.log('(INFO) POST /createAccount RESPONSE: -6');
                   return response.json({success:-6, message:'Server Error.'});
                 }
                if (res.statusCode == 200) {
                    let json = JSON.parse(body);
-                   console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
+                   console.log('(INFO) POST /createAccount RESPONSE: 1');
                    return response.json({success:1, message:'Account Created!'});
                }
                else{
-                 console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -1');
+                 console.log('(INFO) POST /createAccount RESPONSE: -1');
                  return response.json({success:-1, message:'Error In Adding User to Database.'});
                }
            })
          }
          else{
-           console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -2');
+           console.log('(INFO) POST /createAccount RESPONSE: -2');
            return response.json({success:-2, message:'Email Address Is Already Used.'});
          }
-
      }
      else{
-       console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -4');
+       console.log('(INFO) POST /createAccount RESPONSE: -4');
        return response.json({success:-4, message:json});
      }
-
-     console.log(body)
  })
-
 })
 
 
