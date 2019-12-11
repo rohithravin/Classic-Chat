@@ -73,7 +73,7 @@ export class SignInComponent implements OnInit {
         })
     }
     else{
-      this._snackBar.open('Enter Required Fields.', 'Close', {
+      this._snackBar.open('USER ERROR: Enter required fields.', 'Close', {
         verticalPosition: 'top'
       });
     }

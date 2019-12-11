@@ -2,6 +2,10 @@ require('dotenv').config()
 var express=require('express');
 var app=express();
 var bodyParser=require('body-parser');
+var request = require('request');
+
+//Token used to authenticate REST calls
+var REST_SERVICE_API_TOKEN = ""
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,8 +33,41 @@ app.post('/createAccount', function(request, response){
 
 })
 
+function getRestServiceToken() {
+  var body = {
+    "dbParms": {
+        "dbHost": process.env.DB_HOSTNAME,
+        "dbName": process.env.DB_DATABASE,
+        "dbPort": Number(process.env.DB_PORT),
+        "isSSLConnection": true,
+        "username": process.env.DB_UID,
+        "password": process.env.DB_PWD
+    },
+    "expiredTime": '72h'
+  }
+  var options = {
+      url: process.env.REST_URL + '/v1/auth',
+      method: 'POST',
+      headers: {
+          'content-type': 'application/json'
+      },
+      body: JSON.stringify(body),
+      rejectUnhauthorized : false,
+      strictSSL: false
+  }
+  request(options, function(err, res, body) {
+       if (res.statusCode == 200) {
+           let json = JSON.parse(body);
+           console.log('[POST] Aquired New Rest Service Token: ' + `${json.token}`)
+           REST_SERVICE_API_TOKEN = json.token
+       }
+       else{
+          console.log('ERROR IN AQUIRING TOKEN. CHECK DATABASE CREDENTIALS.')
+       }
+  })
+}
 
-
+setInterval(getRestServiceToken, 30000);
 app.listen(8888, function(){
     console.log("Server is listening on port 8888");
 })
