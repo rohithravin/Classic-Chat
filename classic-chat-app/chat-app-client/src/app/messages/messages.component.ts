@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {Md5} from 'ts-md5/dist/md5';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { HttpService }  from '../http.service';
+import { LoginModel } from '../models/login-model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-messages',
@@ -9,8 +14,12 @@ export class MessagesComponent implements OnInit {
 
   selectedChat:string;
 
-  constructor() {
+  constructor( private _router:Router, private _httpService:HttpService,private _snackBar: MatSnackBar) {
     this.selectedChat = 'chat_1';
+    this._snackBar.open('Login Sucessful!', 'Close', {
+      verticalPosition: 'top',
+      duration: 2000
+    });
   }
 
   ngOnInit() {

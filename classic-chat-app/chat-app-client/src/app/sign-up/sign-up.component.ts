@@ -3,6 +3,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { AccountModel } from '../models/account-model';
 import {Router} from '@angular/router';
 import { HttpService }  from '../http.service';
+import {Md5} from 'ts-md5/dist/md5';
 
 
 @Component({
@@ -31,10 +32,9 @@ export class SignUpComponent implements OnInit {
 
   }
 
-
-
   CreateAccount(){
     if(this.Validate()){
+        this.account_model.password = Md5.hashStr(this.account_model.password).toString()
         var err=this._httpService.createAccount(this.account_model);
         err.subscribe(data=>{
           if (typeof data === "string"){

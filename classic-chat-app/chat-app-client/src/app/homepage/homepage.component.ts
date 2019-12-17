@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { HttpService }  from '../http.service';
+import {Md5} from 'ts-md5/dist/md5';
 import { LoginModel } from '../models/login-model';
 
 @Component({
@@ -31,7 +32,7 @@ export class HomepageComponent implements OnInit {
       var err=this._httpService.verifyLoginCredentials(this.login_model);
       err.subscribe(data=>{
         if (data['success'] == 1){
-          console.log('WOHOOO');
+          this._router.navigate(['/messages/' + Md5.hashStr(this.login_model.email).toString()]);
         }
         else{
           localStorage.setItem('ClassicChat_login_error', 'True');

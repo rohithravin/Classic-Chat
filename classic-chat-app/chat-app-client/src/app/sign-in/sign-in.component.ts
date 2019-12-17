@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../models/login-model';
 import {Router} from '@angular/router';
 import { HttpService }  from '../http.service';
+import {Md5} from 'ts-md5/dist/md5';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
@@ -55,6 +56,7 @@ export class SignInComponent implements OnInit {
 
     if (!this.errPassword && !this.errEmail){
         console.log('Send Login Credentials')
+        this.login_model.password = Md5.hashStr(this.login_model.password).toString()
         var err=this._httpService.verifyLoginCredentials(this.login_model);
         err.subscribe(data=>{
           console.log("response:", data);
@@ -64,6 +66,7 @@ export class SignInComponent implements OnInit {
                 localStorage.setItem('ClassicChat_login_model', JSON.stringify(this.login_model));
               else
                 localStorage.setItem('ClassicChat_login_model', '');
+            this._router.navigate(['/messages/' + Md5.hashStr(this.login_model.email).toString()]);
           }
           else{
             this._snackBar.open('Incorrect Login Credentials. Try Again.', 'Close', {

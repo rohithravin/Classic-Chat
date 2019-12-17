@@ -11,6 +11,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { HttpService } from './http.service';
 import {BrowserAnimationsModule} from  '@angular/platform-browser/animations';
+import {Md5} from 'ts-md5/dist/md5';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import {BrowserAnimationsModule} from  '@angular/platform-browser/animations';
     MatSnackBarModule,
     BrowserAnimationsModule
   ],
-  providers: [HttpService],
+  providers: [HttpService, Md5],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

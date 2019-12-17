@@ -18,12 +18,12 @@ export class HttpService {
 
   verifyLoginCredentials(login_info) {
     const payload  = JSON.stringify(login_info);
-    return this.http.post('http://localhost:8888/verifyLoginCredentials', { login_credentials: payload }, this.httpOptions);
+    return this.http.post('http://localhost:8887/verifyLoginCredentials', { login_credentials: payload }, this.httpOptions);
   }
 
   createAccount(account_info) {
       const payload  = JSON.stringify(account_info);
-      return this.http.post('http://localhost:8888/createAccount', { account_information: payload }, this.httpOptions).pipe( catchError(this.handleError));
+      return this.http.post('http://localhost:8887/createAccount', { account_information: payload }, this.httpOptions).pipe( catchError(this.handleError));
   }
 
   handleError(error: HttpErrorResponse){

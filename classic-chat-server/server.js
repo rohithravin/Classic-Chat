@@ -15,13 +15,50 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.post('/verifyLoginCredentials', function(request, response){
-  var login_info = JSON.parse(request.body['login_credentials']);
-  console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , request.body['login_credentials'])
+app.post('/verifyLoginCredentials', function(req, response){
+  var login_info = JSON.parse(req.body['login_credentials']);
+  console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , req.body['login_credentials'])
 
-  console.log('(INFO) POST /verifyLoginCredentials RESPONSE: 1');
-  return response.json({success:-1});
+  var body2 = {
+   "parameters": {
+           "email": login_info.email,
+           "password": login_info.password
+       },
+       "sync": true
+ }
+  var options = {
+     url: process.env.REST_URL + '/v1/services/verifylogin/0.1',
+     method: 'POST',
+     headers: {
+         'content-type': 'application/json',
+         'authorization': REST_SERVICE_API_TOKEN
+     },
+     body: JSON.stringify(body2),
+     rejectUnhauthorized : false,
+     strictSSL: false
+ }
 
+ request(options, function(err, res, body) {
+    if (err){
+      console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -3');
+      return response.json({success:-3, message:'Server Error.'});
+    }
+    else if (res.statusCode == 200) {
+      let json = JSON.parse(body);
+      if (json.resultSet[0].ACCOUNTEXISTS == 1){
+        console.log('(INFO) POST /createAccount RESPONSE: 1');
+        return response.json({success:1, message:"Login Successful!"});
+      }
+      else{
+        console.log('(INFO) POST /createAccount RESPONSE: -1');
+        return response.json({success:-1, message:"Invalid Credentials"});
+      }
+    }
+    else{
+      console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -4');
+      return response.json({success:-4, message:json});
+    }
+ })
 })
 
 app.post('/createAccount', function(req, response){
@@ -139,8 +176,8 @@ function getRestServiceToken() {
   })
 }
 
-setInterval(getRestServiceToken, 10000);
+setInterval(getRestServiceToken, 15000);
 
-app.listen(8888, function(){
-    console.log("Server is listening on port 8888");
+app.listen(8887, function(){
+    console.log("Server is listening on port 8887");
 })
