@@ -15,6 +15,69 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.post('/createNewChatRoom', function(req, response){
+  var userid = JSON.parse(req.body['new_message']);
+  console.log('(INFO) POST /createNewChatRoom REQUEST: ' , req.body['new_message'])
+
+
+  
+
+
+
+
+  console.log('(INFO) POST /createNewChatRoom RESPONSE: 1');
+  return response.json({success:1, message:"Chat Group Created!"});
+
+})
+
+
+
+app.post('/getUserByID', function(req, response){
+  var userid = JSON.parse(req.body['user_id']);
+  console.log('(INFO) POST /getUserByID REQUEST: ' , req.body['user_id'])
+  var body2 = {
+   "parameters": {
+           "id": userid
+       },
+       "sync": true
+ }
+  var options = {
+     url: process.env.REST_URL + '/v1/services/getuserbyid/0.1',
+     method: 'POST',
+     headers: {
+         'content-type': 'application/json',
+         'authorization': REST_SERVICE_API_TOKEN
+     },
+     body: JSON.stringify(body2),
+     rejectUnhauthorized : false,
+     strictSSL: false
+ }
+
+ request(options, function(err, res, body) {
+    if (err){
+      console.log('(INFO) POST /getUserByID RESPONSE: -3');
+      return response.json({success:-3, message:'Server Error.'});
+    }
+    else if (res.statusCode == 200) {
+      let json = JSON.parse(body);
+      if (json.rowCount == 1){
+        console.log('(INFO) POST /getUserByID RESPONSE: 1');
+        return response.json({success:1, message:"User Retrived!", data: json.resultSet});
+      }
+      else{
+        console.log('(INFO) POST /getUserByID RESPONSE: -1');
+        return response.json({success:-1, message:"Invalid Credentials"});
+      }
+    }
+    else{
+      console.log('(INFO) POST /getUserByID RESPONSE: -4');
+      return response.json({success:-4, message:"ERROR"});
+    }
+ })
+})
+
+
+
 app.post('/verifyLoginCredentials', function(req, response){
   var login_info = JSON.parse(req.body['login_credentials']);
   console.log('(INFO) POST /verifyLoginCredentials REQUEST: ' , req.body['login_credentials'])

@@ -1,11 +1,21 @@
+
 <body id="page-top">
-    <div id="wrapper">
+  <div class="row" *ngIf=hideData style="padding-top:25px;">
+                          <div class="col">
+                              <div class="card shadow mb-4" style="margin-top: 5px;">
+                                  <div class="card-body">
+                                      <p style="font-size: 15px;margin-bottom: 0px;margin-top: 0px;">LOADING MESSAGES. . .&nbsp;</p>
+                                  </div>
+                              </div>
+                          </div>
+  </div>
+    <div id="wrapper" *ngIf=showData >
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <div class="container-fluid" style="padding-top: 25px;">
                     <div class="row">
                         <div class="col">
-                            <h3 class="text-dark mb-4">ClassicChat Messages</h3>
+                            <h3 class="text-dark mb-4">Welcome {{current_user_account.first_name}}</h3>
                         </div>
                         <div class="col-xl-2 text-right"><a [routerLink]="['']"><span class="text-right">Account Profile</span></a></div>
                         <div class="col-xl-1"><a (click)=Logout() href="javascript:void(0);"><span>Logout</span></a></div>

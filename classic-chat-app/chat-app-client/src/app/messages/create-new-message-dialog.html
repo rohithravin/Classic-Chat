@@ -3,7 +3,7 @@
         <div class="d-flex flex-column" id="content-wrapper" style="background-color: rgb(255,255,255);">
             <div id="content">
                 <div class="container-fluid" style="padding-right: 10px;padding-left: 10px;">
-                    <div class="row" style="padding-top: 5px;margin-left: 0px;margin-right: 0px;">
+                    <div class="row" style="padding-top: 10px;margin-left: 0px;margin-right: 0px;">
                         <div class="col" style="padding-right: 0px;padding-left: 0px;">
                             <div class="card shadow mb-3">
                                 <div class="card-header py-3">
@@ -13,15 +13,29 @@
                                     <form>
                                         <div class="form-row">
                                             <div class="col">
-                                                <div class="form-group"><input class="form-control" type="email" name="email" placeholder="User Name"></div>
+                                                <div class="form-group">
+                                                  <input class="form-control" type="email"  [(ngModel)]="this.data.groupname" #opCarrier="ngModel" name="email" placeholder="Group Name"   >
+                                                  <small class="text-danger" *ngIf="this.data.groupname == ''  && errGroupName" style='margin-left:20px;'>Group Name is required</small>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
-                                                <div class="form-group"><textarea class="form-control" placeholder="Message" style="height: 230px;"></textarea></div>
+                                                <div class="form-group">
+                                                  <input class="form-control" type="email"  [(ngModel)]="this.data.usernames" #opCarrier="ngModel" name="email" placeholder="Username (if multiple split by , )" >
+                                                  <small class="text-danger" *ngIf="this.data.usernames == ''  && errUsernames" style='margin-left:20px;'>Usernames are required</small>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Send New Message</button></div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                  <textarea class="form-control" placeholder="Message"  [(ngModel)]="this.data.message" #opCarrier="ngModel" name= "messageman" style="height: 230px;" ></textarea>
+                                                  <small class="text-danger" *ngIf="this.data.message == ''  && errMessage" style='margin-left:20px;'>Usernames are required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"><button class="btn btn-primary btn-sm" type="submit"   (click)="onNoClick()">Send New Message</button></div>
                                     </form>
                                 </div>
                             </div>

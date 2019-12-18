@@ -4,7 +4,7 @@ import { AccountModel } from '../models/account-model';
 import {Router} from '@angular/router';
 import { HttpService }  from '../http.service';
 import {Md5} from 'ts-md5/dist/md5';
-
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-sign-up',
@@ -48,7 +48,9 @@ export class SignUpComponent implements OnInit {
                 this._router.navigate(['/signin']);
             }
             else{
-              this._snackBar.open('SERVER ERROR MESSAGE: ' + data['message'], 'Close', {
+
+
+              this._snackBar.open('SERVER ERROR MESSAGE: ' + data['message'] , 'Close', {
                 verticalPosition: 'top'
               });
             }

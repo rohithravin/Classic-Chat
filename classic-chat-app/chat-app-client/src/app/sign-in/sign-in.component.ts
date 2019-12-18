@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import { HttpService }  from '../http.service';
 import {Md5} from 'ts-md5/dist/md5';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-sign-in',
@@ -45,7 +46,7 @@ export class SignInComponent implements OnInit {
 
 
   LogIn(){
-  if (this.login_model.email == '')
+  if (this.login_model.username == '')
     this.errEmail = true;
   else
     this.errEmail = false;
@@ -66,7 +67,7 @@ export class SignInComponent implements OnInit {
               localStorage.setItem('ClassicChat_login_model', JSON.stringify(this.login_model));
             else
               localStorage.setItem('ClassicChat_login_model', '');
-          this._router.navigate(['/messages/' + Md5.hashStr(data['data'][0]['USER_ID'].toString()).toString()]);
+          this._router.navigate(['/messages/' + btoa(data['data'][0]['USER_ID'].toString())]);
         }
         else{
           this._snackBar.open('Incorrect Login Credentials. Try Again.', 'Close', {

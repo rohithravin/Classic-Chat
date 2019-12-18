@@ -26,6 +26,16 @@ export class HttpService {
       return this.http.post('http://localhost:8887/createAccount', { account_information: payload }, this.httpOptions).pipe( catchError(this.handleError));
   }
 
+  getUserByID(id) {
+      const payload  = JSON.stringify(id);
+      return this.http.post('http://localhost:8887/getUserByID', { user_id: payload }, this.httpOptions).pipe( catchError(this.handleError));
+  }
+
+  createNewChatRoom(newChatRoom) {
+      const payload  = JSON.stringify(newChatRoom);
+      return this.http.post('http://localhost:8887/createNewChatRoom', { new_message: payload }, this.httpOptions).pipe( catchError(this.handleError));
+  }
+
   handleError(error: HttpErrorResponse){
     var temp = ['SERVE ERROR: Server not responding. Try again later.'];
     console.log(temp[0]);
