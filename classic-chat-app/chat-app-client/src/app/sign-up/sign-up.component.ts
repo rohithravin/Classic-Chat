@@ -63,7 +63,7 @@ export class SignUpComponent implements OnInit {
   }
 
   Validate(){
-    if (this.account_model.email == '')
+    if (this.account_model.username == '')
       this.errEmail = true;
     else
       this.errEmail = false;

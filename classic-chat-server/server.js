@@ -45,9 +45,9 @@ app.post('/verifyLoginCredentials', function(req, response){
     }
     else if (res.statusCode == 200) {
       let json = JSON.parse(body);
-      if (json.resultSet[0].ACCOUNTEXISTS == 1){
+      if (json.rowCount == 1){
         console.log('(INFO) POST /createAccount RESPONSE: 1');
-        return response.json({success:1, message:"Login Successful!"});
+        return response.json({success:1, message:"Login Successful!", data: json.resultSet});
       }
       else{
         console.log('(INFO) POST /createAccount RESPONSE: -1');

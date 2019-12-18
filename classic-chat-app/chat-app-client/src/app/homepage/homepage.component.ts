@@ -32,7 +32,7 @@ export class HomepageComponent implements OnInit {
       var err=this._httpService.verifyLoginCredentials(this.login_model);
       err.subscribe(data=>{
         if (data['success'] == 1){
-          this._router.navigate(['/messages/' + Md5.hashStr(this.login_model.username).toString()]);
+          this._router.navigate(['/messages/' + Md5.hashStr(data['data'][0]['USER_ID'].toString()).toString()]);
         }
         else{
           localStorage.setItem('ClassicChat_login_error', 'True');

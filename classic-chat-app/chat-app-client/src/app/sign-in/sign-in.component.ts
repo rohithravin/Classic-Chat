@@ -45,48 +45,48 @@ export class SignInComponent implements OnInit {
 
 
   LogIn(){
-    if (this.login_model.email == '')
-      this.errEmail = true;
-    else
-      this.errEmail = false;
-    if (this.login_model.password == '')
-      this.errPassword = true;
-    else
-      this.errPassword = false;
+  if (this.login_model.email == '')
+    this.errEmail = true;
+  else
+    this.errEmail = false;
+  if (this.login_model.password == '')
+    this.errPassword = true;
+  else
+    this.errPassword = false;
 
-    if (!this.errPassword && !this.errEmail){
-        console.log('Send Login Credentials')
-        this.login_model.password = Md5.hashStr(this.login_model.password).toString()
-        var err=this._httpService.verifyLoginCredentials(this.login_model);
-        err.subscribe(data=>{
-          console.log("response:", data);
-          if (data['success'] == 1){
-            this._snackBar.dismiss();
-              if (this.remember_check_box == true)
-                localStorage.setItem('ClassicChat_login_model', JSON.stringify(this.login_model));
-              else
-                localStorage.setItem('ClassicChat_login_model', '');
-            this._router.navigate(['/messages/' + Md5.hashStr(this.login_model.username).toString()]);
-          }
-          else{
-            this._snackBar.open('Incorrect Login Credentials. Try Again.', 'Close', {
-              verticalPosition: 'top'
-            });
-          }
-        })
-    }
-    else{
-      this._snackBar.open('USER ERROR: Enter required fields.', 'Close', {
-        verticalPosition: 'top'
-      });
-    }
-
+  if (!this.errPassword && !this.errEmail){
+      console.log('Send Login Credentials')
+      this.login_model.password = Md5.hashStr(this.login_model.password).toString()
+      var err=this._httpService.verifyLoginCredentials(this.login_model);
+      err.subscribe(data=>{
+        console.log("response:", data);
+        if (data['success'] == 1){
+          this._snackBar.dismiss();
+            if (this.remember_check_box == true)
+              localStorage.setItem('ClassicChat_login_model', JSON.stringify(this.login_model));
+            else
+              localStorage.setItem('ClassicChat_login_model', '');
+          this._router.navigate(['/messages/' + Md5.hashStr(data['data'][0]['USER_ID'].toString()).toString()]);
+        }
+        else{
+          this._snackBar.open('Incorrect Login Credentials. Try Again.', 'Close', {
+            verticalPosition: 'top'
+          });
+        }
+      })
+  }
+  else{
+    this._snackBar.open('USER ERROR: Enter required fields.', 'Close', {
+      verticalPosition: 'top'
+    });
   }
 
-  SignUp(){
-    this._snackBar.dismiss();
-    this._router.navigate(['/signup']);
-  }
+}
+
+SignUp(){
+  this._snackBar.dismiss();
+  this._router.navigate(['/signup']);
+}
 
   RememberMe(){
     if (this.remember_check_box == false){
