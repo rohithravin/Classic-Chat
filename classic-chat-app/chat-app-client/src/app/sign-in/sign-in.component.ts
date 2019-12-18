@@ -66,7 +66,7 @@ export class SignInComponent implements OnInit {
                 localStorage.setItem('ClassicChat_login_model', JSON.stringify(this.login_model));
               else
                 localStorage.setItem('ClassicChat_login_model', '');
-            this._router.navigate(['/messages/' + Md5.hashStr(this.login_model.email).toString()]);
+            this._router.navigate(['/messages/' + Md5.hashStr(this.login_model.username).toString()]);
           }
           else{
             this._snackBar.open('Incorrect Login Credentials. Try Again.', 'Close', {

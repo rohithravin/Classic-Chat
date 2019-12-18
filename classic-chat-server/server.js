@@ -21,7 +21,7 @@ app.post('/verifyLoginCredentials', function(req, response){
 
   var body2 = {
    "parameters": {
-           "email": login_info.email,
+           "username": login_info.username,
            "password": login_info.password
        },
        "sync": true
@@ -67,7 +67,7 @@ app.post('/createAccount', function(req, response){
   console.log('(INFO) POST /createAccount REQUEST: ' , account_info.first_name)
   var body2 = {
    "parameters": {
-           "email": account_info.email
+           "username": account_info.username
        },
        "sync": true
  }
@@ -95,7 +95,7 @@ app.post('/createAccount', function(req, response){
              "parameters": {
                      "firstname": account_info.first_name,
                      "lastname": account_info.last_name,
-                     "email": account_info.email,
+                     "username": account_info.username,
                      "password": account_info.password
                  },
                  "sync": true
@@ -129,12 +129,12 @@ app.post('/createAccount', function(req, response){
          }
          else{
            console.log('(INFO) POST /createAccount RESPONSE: -2');
-           return response.json({success:-2, message:'Email Address Is Already Used.'});
+           return response.json({success:-2, message:'username Address Is Already Used.'});
          }
      }
      else{
        console.log('(INFO) POST /createAccount RESPONSE: -4');
-       return response.json({success:-4, message:json});
+       return response.json({success:-4, message:body});
      }
  })
 })
