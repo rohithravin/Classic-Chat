@@ -52,6 +52,8 @@ export class MessagesComponent implements OnInit {
           if (data['success'] == 1){
             this.current_user_account = new AccountModel(data['data'][0].FIRST_NAME,data['data'][0].LAST_NAME,data['data'][0].USERNAME,data['data'][0].PASSWORD );
             console.log(this.current_user_account)
+            localStorage.setItem("Current User Name", this.current_user_account.username)
+
             this.hideData = false;
             this.showData = true;
             this._snackBar.open('Login Sucessful!', 'Close', {
@@ -106,7 +108,7 @@ export class DialogOverviewExampleDialog {
   errGroupName:boolean;
   errUsernames:boolean;
   errMessage:boolean;
-
+  usernames:string;
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
@@ -114,8 +116,8 @@ export class DialogOverviewExampleDialog {
       this.errGroupName = false;
       this.errUsernames= false;
       this.errMessage= false;
-
-      this.data = new NewMessageModel("","","")
+      this.usernames = "";
+      this.data = new NewMessageModel([localStorage.getItem("Current User Name")],"","")
 
     }
 
@@ -125,7 +127,7 @@ export class DialogOverviewExampleDialog {
       this.errGroupName = true;
     else
       this.errGroupName = false;
-    if (this.data.usernames == '')
+    if (this.usernames == '')
       this.errUsernames = true;
     else
       this.errUsernames = false;
@@ -142,20 +144,42 @@ export class DialogOverviewExampleDialog {
 
     }
     else{
+
       this._snackBar.dismiss();
-      var err=this._httpService.createNewChatRoom(this.data);
+      var list = this.usernames.split(",")
+      var err=this._httpService.getUserIDS(list.concat(this.data.usernames));
       err.subscribe(data=>{
         console.log("response:", data);
         if (data['success'] == 1){
-          console.log(data)
+          this.data.usernames = data['data']
+          var err=this._httpService.createNewChatRoom(this.data);
+          err.subscribe(data=>{
+            console.log("response:", data);
+            if (data['success'] == 1){
+              this._snackBar.open('Group Chat Created!', 'Close', {
+                verticalPosition: 'top',
+                duration: 2000
+              });
+              this.dialogRef.close();
+              console.log(data)
+            }
+            else{
+              this._snackBar.open('Server Error: Couldn\' Create Group Message.', 'Close', {
+                verticalPosition: 'top',
+                duration: 2000
+              });
+              console.log(data)
+            }
+          })
         }
         else{
-          console.log(data)
+          this._snackBar.open('USER ERROR: Some Usernames Don\'t Exist', 'Close', {
+            verticalPosition: 'top',
+            duration: 2000
+          });
         }
       })
-
     }
-    //this.dialogRef.close();
   }
 
 

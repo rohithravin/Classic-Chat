@@ -36,6 +36,11 @@ export class HttpService {
       return this.http.post('http://localhost:8887/createNewChatRoom', { new_message: payload }, this.httpOptions).pipe( catchError(this.handleError));
   }
 
+  getUserIDS(usernames) {
+      const payload  = JSON.stringify(usernames);
+      return this.http.post('http://localhost:8887/getUserIDS', { usernames: payload }, this.httpOptions).pipe( catchError(this.handleError));
+  }
+
   handleError(error: HttpErrorResponse){
     var temp = ['SERVE ERROR: Server not responding. Try again later.'];
     console.log(temp[0]);

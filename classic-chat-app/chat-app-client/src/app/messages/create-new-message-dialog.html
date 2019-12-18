@@ -22,8 +22,8 @@
                                         <div class="form-row">
                                             <div class="col">
                                                 <div class="form-group">
-                                                  <input class="form-control" type="email"  [(ngModel)]="this.data.usernames" #opCarrier="ngModel" name="email" placeholder="Username (if multiple split by , )" >
-                                                  <small class="text-danger" *ngIf="this.data.usernames == ''  && errUsernames" style='margin-left:20px;'>Usernames are required</small>
+                                                  <input class="form-control" type="email"  [(ngModel)]="this.usernames" #opCarrier="ngModel" name="email" placeholder="Username (if multiple split by , )" >
+                                                  <small class="text-danger" *ngIf="this.usernames == ''  && errUsernames" style='margin-left:20px;'>Usernames are required</small>
                                                 </div>
                                             </div>
                                         </div>
