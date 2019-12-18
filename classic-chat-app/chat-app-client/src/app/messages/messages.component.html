@@ -8,7 +8,7 @@
                             <h3 class="text-dark mb-4">ClassicChat Messages</h3>
                         </div>
                         <div class="col-xl-2 text-right"><a [routerLink]="['']"><span class="text-right">Account Profile</span></a></div>
-                        <div class="col-xl-1"><a [routerLink]="['']"><span>Logout</span></a></div>
+                        <div class="col-xl-1"><a (click)=Logout() href="javascript:void(0);"><span>Logout</span></a></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-lg-4" style="min-width: 390px;">
@@ -18,7 +18,7 @@
                                         <div class="col-xl-10">
                                             <h6 class="text-primary d-flex font-weight-bold m-0" style="padding-top: 5px;">Chats</h6>
                                         </div>
-                                        <div class="col"> <a [routerLink]="['/signin']"> <img src="assets/img/writing.png" style="width: 25px;"> </a> </div>
+                                        <div class="col"> <a (click)=NewMessageDialog() href="javascript:void(0);"> <img src="assets/img/writing.png" style="width: 25px;"> </a> </div>
                                     </div>
                                 </div>
                                 <div class="card-body scroll"  style="padding-top: 0px;padding-bottom: 0px;">

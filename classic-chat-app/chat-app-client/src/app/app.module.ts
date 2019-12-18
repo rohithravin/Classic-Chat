@@ -7,8 +7,16 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { MessagesComponent } from './messages/messages.component';
+import { DialogOverviewExampleDialog } from './messages/messages.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import {
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatRippleModule
+} from '@angular/material';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material';
 import { HttpService } from './http.service';
 import {BrowserAnimationsModule} from  '@angular/platform-browser/animations';
 import {Md5} from 'ts-md5/dist/md5';
@@ -19,7 +27,9 @@ import {Md5} from 'ts-md5/dist/md5';
     HomepageComponent,
     SignInComponent,
     SignUpComponent,
-    MessagesComponent
+    MessagesComponent,
+    DialogOverviewExampleDialog
+
   ],
   imports: [
     BrowserModule,
@@ -27,9 +37,24 @@ import {Md5} from 'ts-md5/dist/md5';
     FormsModule,
     HttpClientModule,
     MatSnackBarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRippleModule
+  ],
+  exports:[
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRippleModule
+  ],
+  entryComponents: [
+   DialogOverviewExampleDialog
   ],
   providers: [HttpService, Md5],
   bootstrap: [AppComponent]
+
 })
 export class AppModule { }
