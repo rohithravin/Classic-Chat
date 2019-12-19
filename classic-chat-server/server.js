@@ -16,6 +16,199 @@ app.use(function (req, res, next) {
 });
 
 
+app.post('/sendMessage', function(req, response){
+  var groupid = JSON.parse(req.body['info']);
+  console.log('(INFO) POST /sendMessage REQUEST: ' , groupid)
+
+
+
+    var body2 = {
+     "parameters": {
+             "message": groupid[0],
+             "groupid": groupid[1],
+             "userid": groupid[2]
+         },
+         "sync": true
+   }
+
+    var options = {
+       url: process.env.REST_URL + '/v1/services/addmessagetogroup/0.1',
+       method: 'POST',
+       headers: {
+           'content-type': 'application/json',
+           'authorization': REST_SERVICE_API_TOKEN
+       },
+       body: JSON.stringify(body2),
+       rejectUnhauthorized : false,
+       strictSSL: false
+   }
+
+   request(options, function(err, res, body) {
+      if (err){
+        console.log('(INFO) POST /sendMessage RESPONSE: -3');
+        return response.json({success:-3, message:'Server Error.'});
+      }
+      else if (res.statusCode == 200) {
+        let json = JSON.parse(body);
+        console.log(json)
+        console.log('(INFO) POST /sendMessage RESPONSE: 1');
+        return response.json({success:1, message:'Message Sent!'});
+      }
+      else{
+        console.log('(INFO) POST /sendMessage RESPONSE: -4');
+        return response.json({success:-4, message:"ERROR"});
+      }
+   })
+})
+
+
+
+
+app.post('/getMessages', function(req, response){
+  var groupid = JSON.parse(req.body['groupid']);
+  console.log('(INFO) POST /getMessages REQUEST: ' , req.body['groupid'])
+
+  var body2 = {
+   "parameters": {
+           "group_id": groupid
+       },
+       "sync": true
+ }
+
+  var options = {
+     url: process.env.REST_URL + '/v1/services/getmessages/0.1',
+     method: 'POST',
+     headers: {
+         'content-type': 'application/json',
+         'authorization': REST_SERVICE_API_TOKEN
+     },
+     body: JSON.stringify(body2),
+     rejectUnhauthorized : false,
+     strictSSL: false
+ }
+
+ request(options, function(err, res, body) {
+    if (err){
+      console.log('(INFO) POST /getMessages RESPONSE: -3');
+      return response.json({success:-3, message:'Server Error.'});
+    }
+    else if (res.statusCode == 200) {
+      let json = JSON.parse(body);
+      console.log('(INFO) POST /getMessages RESPONSE: 1');
+      return response.json({success:1, message:'Got Messages!', data:json.resultSet});
+    }
+    else{
+      console.log('(INFO) POST /getMessages RESPONSE: -4');
+      return response.json({success:-4, message:"ERROR"});
+    }
+ })
+})
+
+
+
+
+
+
+app.post('/getRecentMessage', function(req, response){
+  var group_ids = JSON.parse(req.body['groupids']);
+  console.log('(INFO) POST /getRecentMessage REQUEST: ' , group_ids)
+  var list = [];
+  var y = 0;
+  var x;
+  for (x = 0; x < group_ids.length; x++){
+     var body2 = {
+      "parameters": {
+              "groupid": group_ids[x]
+          },
+          "sync": true
+    }
+     var options = {
+        url: process.env.REST_URL + '/v1/services/getrecentmessage/0.1',
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'authorization': REST_SERVICE_API_TOKEN
+        },
+        body: JSON.stringify(body2),
+        rejectUnhauthorized : false,
+        strictSSL: false
+    }
+
+    request(options, function(err, res, body) {
+        y = y +1
+       if (err){
+         console.log('(INFO) POST /getRecentMessage RESPONSE: -3');
+
+       }
+       else if (res.statusCode == 200) {
+         let json = JSON.parse(body);
+         if (json.rowCount == 1){
+           list.push(json.resultSet[0])
+           if (y == group_ids.length){
+              if (list.length == group_ids.length){
+                console.log('(INFO) POST /getRecentMessage RESPONSE: 1');
+                return response.json({success:1, message:"Got Recent Messages!", data: list});
+              }
+              else{
+                console.log('(INFO) POST /getRecentMessage RESPONSE: -1');
+                return response.json({success:-1, message:"Couldn't Load Messages!"});
+              }
+           }
+         }
+         else{
+           console.log('(INFO) POST /getRecentMessage RESPONSE: -10');
+         }
+       }
+       else{
+         console.log('(INFO) POST /getRecentMessage RESPONSE: -4');
+       }
+    })
+  }
+})
+
+app.post('/getChatRoomsForUser', function(req, response){
+  var userid = JSON.parse(req.body['userid']);
+  console.log('(INFO) POST /getChatRoomsForUser REQUEST: ' , userid)
+
+  var body2 = {
+   "parameters": {
+           "userid": userid,
+       },
+       "sync": true
+ }
+
+  var options = {
+     url: process.env.REST_URL + '/v1/services/getchatgroups/0.1',
+     method: 'POST',
+     headers: {
+         'content-type': 'application/json',
+         'authorization': REST_SERVICE_API_TOKEN
+     },
+     body: JSON.stringify(body2),
+     rejectUnhauthorized : false,
+     strictSSL: false
+ }
+
+ request(options, function(err, res, body) {
+    if (err){
+      console.log('(INFO) POST /getChatRoomsForUser RESPONSE: -3');
+      return response.json({success:-3, message:'Server Error.'});
+    }
+    else if (res.statusCode == 200) {
+      let json = JSON.parse(body);
+      console.log('(INFO) POST /getChatRoomsForUser RESPONSE: 1');
+      return response.json({success:1, message:"Got Chat Rooms!", data: json.resultSet});
+    }
+    else{
+      console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -4');
+      return response.json({success:-1, message:json});
+    }
+ })
+
+
+})
+
+
 app.post('/getUserIDS', function(req, response){
   var usernames = JSON.parse(req.body['usernames']);
   console.log('(INFO) POST /getUserIDS REQUEST: ' , usernames)
@@ -104,10 +297,15 @@ app.post('/createNewChatRoom', function(req, response){
     else if (res.statusCode == 200) {
       let json = JSON.parse(body);
       if (json.rowCount == 0){
+        var is_groupchat = 0
+        if (new_message.usernames.length >2){
+          is_groupchat = 1
+        }
 
         var body3 = {
          "parameters": {
-                 "groupname": new_message.groupname
+                 "groupname": new_message.groupname,
+                 "isgroupchat": is_groupchat
              },
              "sync": true
        }
@@ -196,6 +394,7 @@ app.post('/createNewChatRoom', function(req, response){
                             if (y == new_message.usernames.length){
                                 if (new_message.usernames.length == list.length){
                                   console.log(new_message.usernames[new_message.usernames.length-1])
+                                  console.log(new_message.message)
                                   var body22 = {
                                    "parameters": {
                                        "groupid": json2.resultSet[0].GROUP_ID,
@@ -228,6 +427,8 @@ app.post('/createNewChatRoom', function(req, response){
                                     }
                                     else{
                                       console.log('(INFO) POST /createNewChatRoom RESPONSE: -43');
+
+                                      console.log(body)
                                       return response.json({success:-43, message:"ERROR"});
                                     }
                                  })
@@ -301,8 +502,6 @@ app.post('/createNewChatRoom', function(req, response){
  })
 
 })
-
-
 
 app.post('/getUserByID', function(req, response){
   var userid = JSON.parse(req.body['user_id']);
@@ -390,7 +589,7 @@ app.post('/verifyLoginCredentials', function(req, response){
     }
     else{
       console.log('(INFO) POST /verifyLoginCredentials RESPONSE: -4');
-      return response.json({success:-4, message:json});
+      return response.json({success:-4, message:res});
     }
  })
 })

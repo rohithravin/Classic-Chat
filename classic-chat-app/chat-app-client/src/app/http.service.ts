@@ -41,6 +41,26 @@ export class HttpService {
       return this.http.post('http://localhost:8887/getUserIDS', { usernames: payload }, this.httpOptions).pipe( catchError(this.handleError));
   }
 
+  getChatRoomsForUser(userid) {
+      const payload  = JSON.stringify(userid);
+      return this.http.post('http://localhost:8887/getChatRoomsForUser', { userid: payload }, this.httpOptions).pipe( catchError(this.handleError));
+  }
+
+  getRecentMessage(groupids) {
+      const payload  = JSON.stringify(groupids);
+      return this.http.post('http://localhost:8887/getRecentMessage', { groupids: payload }, this.httpOptions).pipe( catchError(this.handleError));
+  }
+
+  getMessages(groupid) {
+      const payload  = JSON.stringify(groupid);
+      return this.http.post('http://localhost:8887/getMessages', { groupid: payload }, this.httpOptions).pipe( catchError(this.handleError));
+  }
+
+  sendMessage(stuff) {
+      const payload  = JSON.stringify(stuff);
+      return this.http.post('http://localhost:8887/sendMessage', { info: payload }, this.httpOptions).pipe( catchError(this.handleError));
+  }
+
   handleError(error: HttpErrorResponse){
     var temp = ['SERVE ERROR: Server not responding. Try again later.'];
     console.log(temp[0]);
