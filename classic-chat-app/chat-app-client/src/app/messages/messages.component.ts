@@ -37,7 +37,9 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   preview_groupchats:any;
 
   new_message:string;
+
   subscription: Subscription;
+  subscription2: Subscription;
 
   new_group_name:string;
   new_group_usernames:string;
@@ -52,17 +54,95 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
     this.new_group_usernames= '';
     this.new_group_message= '';
     const source = interval(1000);
+    const source2 = interval(3000);
 
     this.current_messages = [];
     this.preview_groupchats = [];
     this.new_message = "";
     this.subscription = source.subscribe(val => this.GetNewMessages());
-
+    this.subscription2 = source2.subscribe(val => this.UpdateChatPreviews());
   }
 
   ngOnDestroy() {
   this.subscription.unsubscribe();
 }
+
+  UpdateChatPreviews(){
+
+    var err=this._httpService.getChatRoomsForUser(this.current_user_id);
+    err.subscribe(data=>{
+      if (data['success'] == 1){
+        if (data['data'].length>0){
+
+            if (data['data'].length != this.preview_groupchats.length){
+                  this.preview_groupchats = []
+
+
+                  var list = []
+                  for (var x = 0; x < data['data'].length; x++){
+                    list.push(data['data'][x].GROUP_ID)
+                    this.preview_groupchats.push(new PreviewChatModel(data['data'][x].GROUP_NAME, "", "", "" , data['data'][x].GROUP_ID,data['data'][x].IS_GROUP_CHAT))
+                  }
+
+                  this.preview_groupchats.sort(function(obj1, obj2) {
+                      return obj1.group_id - obj2.group_id;
+                  });
+
+
+
+                  var err=this._httpService.getRecentMessage(list);
+                  err.subscribe(data=>{
+                    if (data['success'] == 1){
+
+
+                      data['data'].sort(function(obj1, obj2) {
+                          return obj1.GROUP_ID - obj2.GROUP_ID;
+                      });
+
+
+
+                      for (var x = 0; x < data['data'].length;x++){
+                          this.preview_groupchats[x].recent_message_user = data['data'][x].FIRST_NAME
+                          if (data['data'][x].MESSAGE.length > 15){
+                            this.preview_groupchats[x].recent_message = data['data'][x].MESSAGE.substring(0,15) + " ..."
+                          }
+                          else{
+                            this.preview_groupchats[x].recent_message = data['data'][x].MESSAGE
+                          }
+                          this.preview_groupchats[x].recent_message_timestamp = data['data'][x].CREATED_DATE
+                      }
+
+
+                      this.ChangeMessageView(this.preview_groupchats[0].group_id)
+
+                    }
+                    else{
+
+                      this._snackBar.open('Couldn\'t Load Your Messages. Try Again.', 'Close', {
+                        verticalPosition: 'top',
+                        duration: 2000
+                      });
+
+                    }
+                  })
+                }
+
+        }
+      }
+      else{
+        this._snackBar.open('Couldn\'t Find Your Account. Try Logging In Again.', 'Close', {
+          verticalPosition: 'top',
+          duration: 2000
+        });
+      }
+    })
+
+
+
+  }
+
+
+
 
   GetNewMessages(){
     if (this.current_messages.length > 0){
@@ -76,7 +156,6 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
             for (var x = data['data'].length - (data['data'].length - this.current_messages.length ); x < data['data'].length; x++ ){
               this.current_messages.push(new MessageModel(data['data'][x].FIRST_NAME,data['data'][x].LAST_NAME, data['data'][x].GROUP_NAME, data['data'][x].MESSAGE ,data['data'][x].GROUP_ID ) )
             }
-            console.log(this.current_messages)
             this.scrollToBottom();
           }
         }
@@ -310,6 +389,7 @@ export class DialogOverviewExampleDialog {
       this.errMessage= false;
       this.usernames = "";
       this.data = new NewMessageModel([localStorage.getItem("Current User Name")],"","")
+      console.log(this.data)
 
     }
 
@@ -339,7 +419,9 @@ export class DialogOverviewExampleDialog {
 
       this._snackBar.dismiss();
       var list = this.usernames.split(",")
+      console.log(list.concat(this.data.usernames))
       var err=this._httpService.getUserIDS(list.concat(this.data.usernames));
+
       err.subscribe(data=>{
         console.log("response:", data);
         if (data['success'] == 1){

@@ -708,7 +708,7 @@ function getRestServiceToken() {
   })
 }
 
-setInterval(getRestServiceToken, 15000);
+setInterval(getRestServiceToken, 120000);
 
 app.listen(8887, function(){
     console.log("Server is listening on port 8887");
