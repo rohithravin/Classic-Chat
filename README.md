@@ -5,7 +5,7 @@ This application is a simple group messaging app that is similar to the basic fu
 * User Login/Signup
 * Create Direct Message
 * Create Group Messsage
-* Toggle Beween Different Messages
+* Toggle Between Different Messages
 * Send Messages
 * Real-Time Messages 
 
